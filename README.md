@@ -1,3 +1,4 @@
+# TS Types Extractor
 ### Update me pls
 
 A project built with rust, which will be compiled to js or smth to be published into npm. 
