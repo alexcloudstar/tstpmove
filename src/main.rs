@@ -38,8 +38,6 @@ fn main() {
                 let new_line = add_export_keyword(line);
                 file.write_all(new_line.as_bytes()).unwrap();
                 file.write_all(b"\n").unwrap();
-            } else {
-                println!("{} already exists in {}", line, &args.file);
             }
         })
     }
