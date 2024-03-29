@@ -21,7 +21,8 @@ fn main() -> std::io::Result<()> {
 
     // Create the output file once outside the loop
     let mut output_file = create_file_in_folder(&args.to, &args.file)?;
-    let output_file_content = read_content(PathBuf::from(&args.to).join(&args.file).to_str().unwrap());
+    let output_file_content =
+        read_content(PathBuf::from(&args.to).join(&args.file).to_str().unwrap());
 
     let files = get_files(&args.from);
     for file_path in files {
@@ -29,7 +30,8 @@ fn main() -> std::io::Result<()> {
         content.lines().for_each(|line| {
             if !output_file_content.contains(line) {
                 let new_line = add_export_keyword(line);
-                if !new_line.trim().is_empty() { // Avoid writing empty lines
+                if !new_line.trim().is_empty() {
+                    // Avoid writing empty lines
                     writeln!(output_file, "{}", new_line).unwrap();
                 }
             }
@@ -60,7 +62,8 @@ fn add_export_keyword(line: &str) -> String {
     if line.contains("export export") {
         line.replace("export export", "export")
     } else if !line.contains("export") && (line.contains("type") || line.contains("interface")) {
-        line.replace("type", "export type").replace("interface", "export interface")
+        line.replace("type", "export type")
+            .replace("interface", "export interface")
     } else {
         line.to_string()
     }
@@ -76,4 +79,3 @@ fn create_file_in_folder(folder: &str, file_name: &str) -> std::io::Result<File>
 
     File::create(&path)
 }
-
