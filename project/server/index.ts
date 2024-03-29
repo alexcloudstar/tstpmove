@@ -24,3 +24,11 @@ export type Test69 = {
 type Test88 ={
     c: boolean;
 }
+
+type Test99 = {
+    a: number;
+    b: string;
+    c: boolean;
+    d: string;
+    e: number;
+}

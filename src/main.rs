@@ -1,11 +1,10 @@
+use clap::Parser;
 use std::fs::{self, File};
 use std::io::prelude::*;
-
-use clap::Parser;
+use std::path::PathBuf;
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
-
 struct Args {
     #[arg(long)]
     from: String,
@@ -17,62 +16,66 @@ struct Args {
     file: String,
 }
 
-fn main() {
+fn main() -> std::io::Result<()> {
     let args = Args::parse();
 
+    // Create the output file once outside the loop
+    let mut output_file = create_file_in_folder(&args.to, &args.file)?;
+    let output_file_content =
+        read_content(PathBuf::from(&args.to).join(&args.file).to_str().unwrap());
+
     let files = get_files(&args.from);
-
-    for file in files {
-        let content = read_content(&file);
-
-        let mut file = fs::OpenOptions::new()
-            .create(true)
-            .append(true)
-            .open(&args.file)
-            .unwrap();
-
-        let file_content = read_content(&args.file);
-
+    for file_path in files {
+        let content = read_content(&file_path);
         content.lines().for_each(|line| {
-            if !file_content.contains(line) {
+            if !output_file_content.contains(line) {
                 let new_line = add_export_keyword(line);
-                file.write_all(new_line.as_bytes()).unwrap();
-                file.write_all(b"\n").unwrap();
+                if !new_line.trim().is_empty() {
+                    // Avoid writing empty lines
+                    writeln!(output_file, "{}", new_line).unwrap();
+                }
             }
-        })
+        });
     }
+
+    Ok(())
 }
 
 fn get_files(from: &str) -> Vec<String> {
-    let mut files = vec![];
-    let paths = std::fs::read_dir(from).unwrap();
-    for path in paths {
-        let path = path.unwrap().path();
-        if path.is_file() && path.extension().unwrap() == "ts" {
-            files.push(path.to_str().unwrap().to_string());
-        }
-    }
-    files
+    fs::read_dir(from)
+        .unwrap()
+        .filter_map(|entry| {
+            let path = entry.ok()?.path();
+            if path.is_file() && path.extension()? == "ts" {
+                return path.to_str().map(ToString::to_string);
+            }
+            None
+        })
+        .collect()
 }
 
-fn read_content(file: &str) -> String {
-    let mut file = File::open(file).unwrap();
-    let mut content = String::new();
-    file.read_to_string(&mut content).unwrap();
-
-    return content;
+fn read_content(file_path: &str) -> String {
+    fs::read_to_string(file_path).unwrap()
 }
 
 fn add_export_keyword(line: &str) -> String {
-    if line.contains("export") {
-        return line.to_string();
-    }
-
     if line.contains("export export") {
-        return line.replace("export export", "export");
+        line.replace("export export", "export")
+    } else if !line.contains("export") && (line.contains("type") || line.contains("interface")) {
+        line.replace("type", "export type")
+            .replace("interface", "export interface")
+    } else {
+        line.to_string()
+    }
+}
+
+fn create_file_in_folder(folder: &str, file_name: &str) -> std::io::Result<File> {
+    let mut path = PathBuf::from(folder);
+    path.push(file_name);
+
+    if let Some(dir_path) = path.parent() {
+        fs::create_dir_all(dir_path)?;
     }
 
-    return line
-        .replace("type", "export type")
-        .replace("interface", "export interface");
+    File::create(&path)
 }
