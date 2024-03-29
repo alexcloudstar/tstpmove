@@ -30,7 +30,6 @@ fn main() -> std::io::Result<()> {
             if !output_file_content.contains(line) {
                 let new_line = add_export_keyword(line);
                 if !new_line.trim().is_empty() {
-                    // Avoid writing empty lines
                     writeln!(output_file, "{}", new_line).unwrap();
                 }
             }
