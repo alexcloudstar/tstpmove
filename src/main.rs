@@ -19,7 +19,6 @@ struct Args {
 fn main() -> std::io::Result<()> {
     let args = Args::parse();
 
-    // Create the output file once outside the loop
     let mut output_file = create_file_in_folder(&args.to, &args.file)?;
     let output_file_content =
         read_content(PathBuf::from(&args.to).join(&args.file).to_str().unwrap());
