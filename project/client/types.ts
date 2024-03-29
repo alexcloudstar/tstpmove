@@ -1,34 +1,31 @@
-type Test = {
+export type Test = {
     a: number;
     b: string;
 }
-
-interface Test2 {
+export interface Test2 {
     a: number;
     b: string;
 }
-
-type Test3 = {
+export type Test3 = {
     name: string;
 }
-
-type Test4 = boolean;
-
+export type Test4 = boolean;
 export type Test69 = {
     a: number;
     b: string;
     c: boolean;
     d: string;
 }
-
-type Test88 ={
+export type Test88 ={
     c: boolean;
 }
-
-type Test99 = {
+export type Test99 = {
     a: number;
     b: string;
     c: boolean;
     d: string;
     e: number;
 }
+export type Test22 = number[]; 
+export type Test44 = number[]; 
+export type Test55 = number[]; 
