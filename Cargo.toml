@@ -7,7 +7,7 @@ description = "A tool to move files to a new location and update their reference
 readme = "README.md"
 homepage = "https://github.com/alexcloudstar/tstpmove"
 repository = "https://github.com/alexcloudstar/tstpmove"
-keywords = ["ts", "extract", "extract types"]
+keywords = ["ts", "extract", "typescript"]
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
