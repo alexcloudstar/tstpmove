@@ -20,3 +20,7 @@ export type Test69 = {
     c: boolean;
     d: string;
 }
+
+type Test88 ={
+    c: boolean;
+}

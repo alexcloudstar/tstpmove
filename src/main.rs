@@ -67,7 +67,6 @@ fn read_content(file: &str) -> String {
 
 fn add_export_keyword(line: &str) -> String {
     if line.contains("export") {
-        println!("Export keyword already exists in {}", line);
         return line.to_string();
     }
 
