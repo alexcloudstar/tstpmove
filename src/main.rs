@@ -33,16 +33,13 @@ fn main() {
 
         let file_content = read_content(&args.file);
 
-        let new_content = content.replace("type", "export type").replace("interface", "export interface");
-
-        new_content.lines().for_each(|line| {
-            println!("{} in {}", line, &args.file);
+        content.lines().for_each(|line| {
             if !file_content.contains(line) {
-                file.write_all(line.replace("export export", "export").as_bytes()).unwrap();
+                let new_line = add_export_keyword(line);
+                file.write_all(new_line.as_bytes()).unwrap();
                 file.write_all(b"\n").unwrap();
             } else {
-                // add some color to it
-                x//println!("{} already exists in {}", line, &args.file);
+                println!("{} already exists in {}", line, &args.file);
             }
         })
     }
@@ -66,4 +63,19 @@ fn read_content(file: &str) -> String {
     file.read_to_string(&mut content).unwrap();
 
     return content;
+}
+
+fn add_export_keyword(line: &str) -> String {
+    if line.contains("export") {
+        println!("Export keyword already exists in {}", line);
+        return line.to_string();
+    }
+
+    if line.contains("export export") {
+        return line.replace("export export", "export");
+    }
+
+    return line
+        .replace("type", "export type")
+        .replace("interface", "export interface");
 }

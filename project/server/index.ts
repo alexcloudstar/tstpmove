@@ -13,3 +13,10 @@ type Test3 = {
 }
 
 type Test4 = boolean;
+
+export type Test69 = {
+    a: number;
+    b: string;
+    c: boolean;
+    d: string;
+}

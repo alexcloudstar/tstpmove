@@ -11,6 +11,6 @@ export type Test3 = {
 }
 export type Test4 = boolean;
 export type Test22 = number[]; 
-export type Test22 = number[]; 
-export type Test22 = number[]; 
-export type Test22 = number[]; 
+export type Test69 = {
+    c: boolean;
+    d: string;
