@@ -34,6 +34,9 @@ fn main() -> std::io::Result<()> {
     let files = get_files(&args.from);
     for file_path in files {
         let content = read_content(&file_path);
+        let blocks = get_block_of_code(&content);
+
+        println!("Blocks: {:?}", blocks);
         content.lines().for_each(|line| {
             if !output_file_content.contains(line) {
                 let new_line = add_export_keyword(line);
@@ -46,4 +49,27 @@ fn main() -> std::io::Result<()> {
 
     Ok(())
 }
+
+
+fn get_block_of_code(content: &str) -> Vec<String> {
+    let mut block_of_code = Vec::new();
+    let mut is_block = false;
+
+    for line in content.lines() {
+        if line.contains("type") || line.contains("interface") {
+            is_block = true;
+        }
+
+        if is_block {
+            block_of_code.push(line.to_string());
+        }
+
+        if line.contains("}") {
+            is_block = false;
+        }
+    }
+
+    block_of_code
+}
+
 
