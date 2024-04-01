@@ -1,6 +1,6 @@
 [package]
 name = "tstpmove"
-version = "1.1.0"
+version = "1.2.0"
 authors = ["Alex Cloudstar alexcloudstar@gmail.com"]
 license = "MIT"
 description = "A tool to move files to a new location and update their references"
