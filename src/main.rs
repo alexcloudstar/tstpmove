@@ -2,7 +2,9 @@ use clap::Parser;
 use std::io::prelude::*;
 use std::path::PathBuf;
 
-use crate::utils::{add_export_keyword, create_file_in_folder, get_files, read_content, get_block_of_code};
+use crate::utils::{
+    add_export_keyword, create_file_in_folder, get_block_of_code, get_files, read_content,
+};
 mod utils;
 
 #[derive(Parser, Debug)]
@@ -42,4 +44,3 @@ fn main() -> std::io::Result<()> {
 
     Ok(())
 }
-
