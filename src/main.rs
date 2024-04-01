@@ -1,5 +1,5 @@
 use clap::Parser;
-use std::io::prelude::*;
+use std::{io::prelude::*, time::Instant};
 use std::path::PathBuf;
 
 use crate::utils::{
@@ -22,6 +22,8 @@ struct Args {
 
 fn main() -> std::io::Result<()> {
     let args = Args::parse();
+    let start = Instant::now();
+
 
     let mut output_file = create_file_in_folder(&args.to, &args.file)?;
     let output_file_content: String =
@@ -41,6 +43,9 @@ fn main() -> std::io::Result<()> {
             }
         });
     }
+
+    let elapsed = start.elapsed();
+    println!("✨ Done, in {:.2} seconds, all types have been moved.", elapsed.as_secs_f32());
 
     Ok(())
 }
